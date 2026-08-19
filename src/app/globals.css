@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+  --font-serif: "Instrument Serif", Georgia, serif;
+
+  /* ── Structure / text (light values render dark so the app is a dark theme) ── */
+  --color-slate-50: #0a0a0a;
+  --color-slate-100: #141414;
+  --color-slate-200: #1f1f1f;
+  --color-slate-300: #2b2b2b;
+  --color-slate-400: #6b7480;
+  --color-slate-500: #9aa3af;
+  --color-slate-600: #b8bfc7;
+  --color-slate-700: #d3d7dd;
+  --color-slate-800: #eceff3;
+  --color-slate-900: #f5f7fa;
+  --color-slate-950: #ffffff;
+
+  /* ── The Coding Company blue ── */
+  --color-primary-50: #eaf4ff;
+  --color-primary-100: #d3e9ff;
+  --color-primary-200: #a8d4ff;
+  --color-primary-300: #6bb5ff;
+  --color-primary-400: #3096ff;
+  --color-primary-500: #0064ff;
+  --color-primary-600: #0057de;
+  --color-primary-700: #0a63ea;
+  --color-primary-800: #003a96;
+  --color-primary-900: #002d74;
+  --color-primary-950: #002054;
+
+  /* ── Status colors rendered for a dark theme ── */
+  --color-rose-50: #2b0f14;
+  --color-rose-100: #3d151d;
+  --color-rose-200: #5e1f2c;
+  --color-rose-300: #802838;
+  --color-rose-400: #a23a4c;
+  --color-rose-500: #f87171;
+  --color-rose-600: #f43f5e;
+  --color-rose-700: #e11d48;
+  --color-rose-800: #fecdd3;
+  --color-rose-900: #ffe4e6;
+
+  --color-emerald-50: #0c2418;
+  --color-emerald-100: #123421;
+  --color-emerald-200: #1b4d30;
+  --color-emerald-300: #256442;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #34d399;
+  --color-emerald-800: #a7f3d0;
+  --color-emerald-900: #d1fae5;
+
+  --color-amber-50: #2a1e08;
+  --color-amber-100: #3a2a0d;
+  --color-amber-200: #5c430f;
+  --color-amber-300: #7d5a10;
+  --color-amber-400: #f59e0b;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #fbbf24;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+
+  --color-sky-50: #0a1c2b;
+  --color-sky-100: #0f2a40;
+  --color-sky-200: #1a3f5e;
+  --color-sky-300: #25618c;
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
+  --color-sky-600: #0284c7;
+  --color-sky-700: #7dd3fc;
+  --color-sky-800: #bae6fd;
+  --color-sky-900: #e0f2fe;
+
+  --color-indigo-50: #13103a;
+  --color-indigo-100: #1c174f;
+  --color-indigo-200: #2a2367;
+  --color-indigo-300: #3b3388;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #a5b4fc;
+  --color-indigo-800: #c7d2fe;
+  --color-indigo-900: #e0e7ff;
+
+  --color-violet-50: #1e1236;
+  --color-violet-100: #2a1a4d;
+  --color-violet-200: #3b2569;
+  --color-violet-300: #4c3188;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #c4b5fd;
+  --color-violet-800: #ddd6fe;
+  --color-violet-900: #ede9fe;
+
+  --color-teal-50: #0c2722;
+  --color-teal-100: #123530;
+  --color-teal-200: #1a4a42;
+  --color-teal-300: #236057;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #5eead4;
+  --color-teal-800: #99f6e4;
+  --color-teal-900: #ccfbf1;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background: #050505;
+    color: #f5f7fa;
+    letter-spacing: -0.011em;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-primary-500) 30%, transparent);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* TCC accents */
+.brand-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.tcc-glow {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0, 100, 255, 0.25) 0%, rgba(0, 100, 255, 0.08) 55%, transparent 85%);
+}
+
+/* Surfaces that were white in the light theme become dark cards in this
+   The Coding Company–inspired dark skin. Un-layered so they beat Tailwind's
+   layered `.bg-white` utility (otherwise inputs/cards stay white while the
+   remapped near-white text tokens render invisible while typing). */
+.bg-white {
+  background-color: #0e0e0e;
+}
+.bg-white\/80 {
+  background-color: rgba(12, 12, 12, 0.72);
+}
+.bg-white\/90 {
+  background-color: rgba(12, 12, 12, 0.9);
+}

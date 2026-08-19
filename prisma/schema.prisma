@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  CANDIDATE
+  ADMIN
+}
+
+enum TestSection {
+  COMMUNICATION
+  APTITUDE
+  VIBE
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  TERMINATED
+}
+
+enum DecisionStatus {
+  PENDING
+  SELECTED
+  REJECTED
+}
+
+model User {
+  id                String            @id @default(cuid())
+  email             String            @unique
+  passwordHash      String
+  role              UserRole          @default(CANDIDATE)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  candidateProfile  CandidateProfile?
+
+  @@index([email])
+}
+
+model CandidateProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName        String
+  phone           String
+  college         String
+  branch          String
+  academicYear    String
+  rollNumber      String
+  photoUrl        String?
+  cameraConsentAt DateTime?
+  testSetId       String?
+testSet         TestSet?          @relation(fields: [testSetId], references: [id])
+  attempt         Attempt?          @relation("CandidateAttempt")
+  evaluation      CandidateEvaluation?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([college])
+  @@index([branch])
+  @@index([academicYear])
+  @@index([testSetId])
+  @@index([phone])
+  @@index([rollNumber])
+}
+
+model TestSet {
+  id         String              @id @default(cuid())
+  code       String              @unique
+  name       String
+  questions  Question[]
+  candidates CandidateProfile[]
+  attempts   Attempt[]
+  createdAt  DateTime            @default(now())
+}
+
+model Question {
+  id        String          @id @default(cuid())
+  testSetId String
+  testSet   TestSet         @relation(fields: [testSetId], references: [id], onDelete: Cascade)
+  section   TestSection
+  number    Int
+  text      String
+  marks     Int             @default(1)
+  isActive  Boolean         @default(true)
+  options   QuestionOption[]
+  answers   Answer[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([testSetId, section, number])
+}
+
+model QuestionOption {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  order      Int      @default(1)
+  isCorrect  Boolean  @default(false)
+
+  @@index([questionId])
+}
+
+model Assessment {
+  id              String    @id @default(cuid())
+  name            String
+  durationMinutes Int       @default(30)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  attempts        Attempt[]
+}
+
+model Attempt {
+  id                  String        @id @default(cuid())
+  candidateId         String        @unique
+  candidate           CandidateProfile @relation("CandidateAttempt", fields: [candidateId], references: [id], onDelete: Cascade)
+  assessmentId        String
+  assessment          Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  testSetId           String
+  testSet             TestSet       @relation(fields: [testSetId], references: [id], onDelete: Cascade)
+  status              AttemptStatus @default(IN_PROGRESS)
+  terminationReason   String?
+  startedAt           DateTime?
+  expiresAt           DateTime?
+  submittedAt         DateTime?
+  terminatedAt        DateTime?
+  durationSeconds     Int?
+  communicationScore  Int?
+  aptitudeScore       Int?
+  vibeScore           Int?
+  vibeScoreAdjusted   Int?
+  totalScore          Int?
+  answers             Answer[]
+  proctoringEvents    ProctoringEvent[]
+  evaluation          CandidateEvaluation?
+
+  @@index([status])
+  @@index([assessmentId])
+  @@index([testSetId])
+}
+
+model Answer {
+  id               String   @id @default(cuid())
+  attemptId        String
+  attempt          Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionId String?
+  isCorrect        Boolean?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+}
+
+model ProctoringEvent {
+  id         String   @id @default(cuid())
+  attemptId  String
+  attempt    Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  type       String
+  detail     String?
+  createdAt  DateTime @default(now())
+
+  @@index([attemptId])
+  @@index([createdAt])
+  @@index([type])
+}
+
+model CandidateEvaluation {
+  id          String         @id @default(cuid())
+  candidateId String         @unique
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  attemptId   String         @unique
+  attempt     Attempt        @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  decision    DecisionStatus @default(PENDING)
+  adminNotes  String?
+  updatedAt   DateTime       @updatedAt
+
+  @@index([decision])
+}

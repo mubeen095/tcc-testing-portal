@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand";
+import { env } from "@/lib/env";
 import { EASE_PULL, WordsPullUp } from "./prisma-text";
 
 const HERO_VIDEO =
@@ -82,7 +83,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
           <div className="grid grid-cols-12 items-end gap-6 px-6 pb-8 sm:px-10 md:px-14 md:pb-12">
             <div className="col-span-12 md:col-span-8">
               <p className="mono-label text-primary-300">
-                We&apos;ll teach you, from zero.
+                {env.appName} · Internships open right now
               </p>
               <h1
                 className="mt-3 text-white"
@@ -99,7 +100,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
                   className="block text-[26vw] font-medium leading-[0.85] tracking-[-0.07em] sm:text-[24vw] md:text-[22vw] lg:text-[20vw]"
                   style={{ color: "rgba(225,224,204,0.55)" }}
                 >
-                  <WordsPullUp text="unfiltered." delay={0.16} />
+                  <WordsPullUp text="taught from zero." delay={0.16} />
                 </span>
               </h1>
             </div>
@@ -111,9 +112,12 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
                 transition={{ duration: 0.8, ease: EASE_PULL, delay: 0.5 }}
                 className="text-primary/70 text-xs leading-[1.2] sm:text-sm md:text-base"
               >
-                Wondering what we&apos;re about? One calm, 30-minute check of
-                how you think, express yourself and carry yourself. Three
-                rounds, zero stress — and we teach you the rest from scratch.
+                Here&apos;s the deal — {env.appName} hires curious interns
+                for Marketing, Inside Sales and Lead Generation — no
+                experience needed. This calm, 30-minute round checks how you
+                think and how you carry yourself. Pass it, and we teach you
+                the grass roots of business from scratch, on the job.
+                Packages go up to ₹4.2–6 LPA.
               </motion.p>
 
               <motion.div

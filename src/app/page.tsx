@@ -5,7 +5,6 @@ import { AppFooter } from "@/components/brand";
 import { Faq, type FaqItem } from "@/components/Faq";
 import { LandingHero } from "@/components/landing/hero";
 import { About, Features } from "@/components/landing/sections";
-import { env } from "@/lib/env";
 import { getAuth } from "@/lib/session";
 
 export const metadata: Metadata = { title: "The Coding Company — Business, from scratch" };
@@ -236,9 +235,19 @@ export default async function HomePage() {
       </main>
 
       <AppFooter>
-        © {new Date().getFullYear()} {env.appName}. Internship recruitment.
-        <span className="mx-2 text-slate-700">·</span>
-        Secured &amp; proctored
+        <span className="inline-flex flex-col items-center gap-1 sm:flex-row sm:gap-3">
+          <span className="brand-serif text-base text-slate-400">
+            The Coding Company
+          </span>
+          <span className="hidden text-slate-700 sm:inline">·</span>
+          Hiring interns — Marketing, Inside Sales, Lead Generation &amp; SLO
+          <span className="hidden text-slate-700 sm:inline">·</span>
+          ₹4.2–6 LPA packages
+          <span className="hidden text-slate-700 sm:inline">·</span>
+          <span className="inline-flex items-center">
+            Secured &amp; proctored
+          </span>
+        </span>
       </AppFooter>
     </div>
   );

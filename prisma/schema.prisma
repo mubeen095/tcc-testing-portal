@@ -30,6 +30,12 @@ enum DecisionStatus {
   REJECTED
 }
 
+enum ProfileApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id                String            @id @default(cuid())
   email             String            @unique
@@ -56,11 +62,15 @@ model CandidateProfile {
   cameraConsentAt DateTime?
   testSetId       String?
 testSet         TestSet?          @relation(fields: [testSetId], references: [id])
+  approvalStatus  ProfileApprovalStatus @default(PENDING)
+  approvedAt      DateTime?
+  rejectionReason String?
   attempt         Attempt?          @relation("CandidateAttempt")
   evaluation      CandidateEvaluation?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  @@index([approvalStatus])
   @@index([college])
   @@index([branch])
   @@index([academicYear])

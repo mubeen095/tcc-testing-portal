@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { err, ok } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
-import { requireCandidate } from "@/lib/session";
+import { requireCandidate, assertCandidateApproved } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     if (!profile) {
       return NextResponse.json({ error: "Candidate profile not found" }, { status: 404 });
     }
+    await assertCandidateApproved(profile);
 
     let body: { granted?: boolean; denied?: boolean } = {};
     try {

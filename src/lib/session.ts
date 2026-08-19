@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 
 import { ApiError, verifySessionToken, type SessionUser } from "@/lib/auth";
 import { env } from "@/lib/env";
+import { prisma } from "@/lib/prisma";
+import type { ProfileApprovalStatus } from "@/generated/prisma/enums";
 
 export function getTokenFromRequest(request: NextRequest): string | null {
   return request.cookies.get(env.sessionCookie)?.value ?? null;
@@ -48,4 +50,20 @@ export async function currentUser(request?: NextRequest): Promise<SessionUser> {
   const auth = await getAuth(request);
   if (!auth) throw new ApiError(401, "Not authenticated");
   return auth;
+}
+
+export type ApprovalCheck = {
+  approvalStatus: ProfileApprovalStatus;
+  rejectionReason?: string | null;
+};
+
+export async function assertCandidateApproved(
+  profile: ApprovalCheck
+): Promise<void> {
+  if (profile.approvalStatus !== "APPROVED") {
+    throw new ApiError(
+      403,
+      profile.rejectionReason ?? "Your profile has not been approved yet."
+    );
+  }
 }

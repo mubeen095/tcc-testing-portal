@@ -25,6 +25,8 @@ type DashboardData = {
     photoUrl: string | null;
     hasPhoto: boolean;
     cameraConsentAt: string | null;
+    approvalStatus: "PENDING" | "APPROVED" | "REJECTED";
+    rejectionReason: string | null;
     testSetId: string | null;
     testSetCode: string | null;
     testSetName: string | null;
@@ -75,8 +77,9 @@ export function CandidateDashboard() {
 
   const { profile, attempt } = data;
   const started = attempt ? !["IN_PROGRESS"].includes(attempt.status) : false;
+  const approved = profile.approvalStatus === "APPROVED";
   const canTakeTest =
-    attempt === null && profile.hasPhoto && profile.cameraConsentAt && profile.testSetId;
+    attempt === null && approved && profile.hasPhoto && profile.cameraConsentAt && profile.testSetId;
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-8">
@@ -100,7 +103,18 @@ export function CandidateDashboard() {
         <LogoutButton />
       </header>
 
-      {!profile.testSetId && !attempt ? (
+      {profile.approvalStatus === "REJECTED" ? (
+        <Alert tone="danger">
+          <strong>Your profile was not approved.</strong>
+          {profile.rejectionReason ? ` ${profile.rejectionReason}` : " Please contact the recruitment team."}
+        </Alert>
+      ) : profile.approvalStatus === "PENDING" ? (
+        <Alert tone="warning">
+          <strong>Profile awaiting approval.</strong> The recruitment team is
+          verifying your details. You will be able to submit a photo and start
+          your assessment once your profile is approved.
+        </Alert>
+      ) : !profile.testSetId && !attempt ? (
         <Alert tone="warning">
           <strong>No test set assigned yet.</strong> The recruitment team will
           assign your paper set (A, B or C). This page updates automatically —
@@ -185,7 +199,7 @@ export function CandidateDashboard() {
         </Card>
       </section>
 
-      {attempt === null ? (
+      {attempt === null && profile.approvalStatus === "APPROVED" ? (
         <Card>
           <div className="border-b border-slate-100 px-5 py-4">
             <h2 className="text-base font-semibold text-slate-900">

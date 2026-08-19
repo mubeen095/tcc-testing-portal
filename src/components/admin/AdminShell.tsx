@@ -9,6 +9,7 @@ import {
   GraduationCap,
   LogOut,
   Settings,
+  ShieldCheck,
   Users,
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ import { BrandLogo } from "@/components/brand";
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: BarChart3 },
   { href: "/admin/candidates", label: "Candidates", icon: Users },
+  { href: "/admin/profiles", label: "Profiles", icon: ShieldCheck },
   { href: "/admin/questions", label: "Questions", icon: ClipboardList },
   { href: "/admin/assessments", label: "Assessments", icon: GraduationCap },
   { href: "/admin/results", label: "Results", icon: FileSpreadsheet },

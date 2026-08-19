@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { err, ok, forbidden, unauthorized } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
-import { currentUser } from "@/lib/session";
+import { currentUser, assertCandidateApproved } from "@/lib/session";
 import { EVENT_TYPES, recordProctoringEvent } from "@/lib/attempts";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +28,7 @@ export async function POST(
     if (!attempt || !profile || attempt.candidateId !== profile.id) {
       return forbidden("You do not own this attempt");
     }
+    await assertCandidateApproved(profile);
     if (attempt.status !== "IN_PROGRESS") {
       return NextResponse.json(
         { error: "Attempt is not active." },

@@ -14,7 +14,7 @@ export function Faq({ items }: { items: FaqItem[] }) {
         return (
           <div
             key={i}
-            className="overflow-hidden rounded-2xl border border-slate-800 bg-white/5"
+            className="overflow-hidden rounded-2xl border border-white/10"
           >
             <button
               type="button"

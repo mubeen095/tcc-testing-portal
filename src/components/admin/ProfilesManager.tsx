@@ -172,7 +172,7 @@ export function ProfilesManager() {
             onClick={() => setTab(t.key)}
             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               tab === t.key
-                ? "bg-primary-600 text-white shadow-sm"
+                ? "bg-primary-500 text-[#101010] shadow-sm"
                 : "bg-white text-slate-600 hover:bg-slate-100"
             }`}
           >

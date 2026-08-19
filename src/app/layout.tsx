@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Mono, Instrument_Serif, Inter } from "next/font/google";
+import { Almarai, DM_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+const almarai = Almarai({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "700", "800"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -40,17 +41,17 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#050505",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${inter.variable} ${instrumentSerif.variable} ${dmMono.variable}`}
+      className={`h-full antialiased ${almarai.variable} ${instrumentSerif.variable} ${dmMono.variable}`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 antialiased">
-        <div className="flex-1 flex flex-col">{children}</div>
+      <body className="flex min-h-full flex-col bg-black text-[#e1e0cc] antialiased">
+        <div className="flex flex-1 flex-col">{children}</div>
       </body>
     </html>
   );

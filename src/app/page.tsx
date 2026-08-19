@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-import { AppFooter, BrandLogo } from "@/components/brand";
+import { AppFooter } from "@/components/brand";
 import { Faq, type FaqItem } from "@/components/Faq";
+import { LandingHero } from "@/components/landing/hero";
+import { About, Features } from "@/components/landing/sections";
 import { env } from "@/lib/env";
 import { getAuth } from "@/lib/session";
 
-export const metadata: Metadata = { title: "Candidate Landing" };
+export const metadata: Metadata = { title: "The Coding Company — Business, from scratch" };
 
 const FAQS: FaqItem[] = [
   {
@@ -87,50 +89,29 @@ const ROLES = [
 ];
 
 const STEPS = [
-  {
-    title: "Create your account",
-    text: "Register in under two minutes with your email and basic details.",
-  },
-  {
-    title: "Add your photo",
-    text: "Upload or capture a clear photo of yourself — it goes to the recruitment team only.",
-  },
-  {
-    title: "Camera consent",
-    text: "Allow camera access and read the short instructions. We keep an eye on focus, not on judging you.",
-  },
-  {
-    title: "30 minutes, 3 rounds",
-    text: "Communication & Grammar, Aptitude and a Vibe Check. A test set is assigned to you automatically.",
-  },
-  {
-    title: "Stay in one tab",
-    text: "Your answers auto-save. Switching tabs can end your test early, so stay focused.",
-  },
-  {
-    title: "Submit & relax",
-    text: "Hit submit and you're done. Our team reviews your results and reaches out for the next round.",
-  },
+  { title: "Create your account", text: "Register in under two minutes with your email and basic details." },
+  { title: "Add your photo", text: "Upload or capture a clear photo of yourself — it goes to the recruitment team only." },
+  { title: "Camera consent", text: "Allow camera access and read the short instructions. We keep an eye on focus, not on judging you." },
+  { title: "30 minutes, 3 rounds", text: "Communication & Grammar, Aptitude and a Vibe Check. A test set is assigned to you automatically." },
+  { title: "Stay in one tab", text: "Your answers auto-save. Switching tabs can end your test early, so stay focused." },
+  { title: "Submit & relax", text: "Hit submit and you're done. Our team reviews your results and reaches out for the next round." },
 ];
 
 const QUALITIES = [
-  {
-    title: "Confidence",
-    text: "Will you raise your hand? We want the student who says 'I'll figure it out.'",
-  },
-  {
-    title: "Communication",
-    text: "Clear, warm, structured. Grammar and vocabulary matter less than being understood.",
-  },
-  {
-    title: "Aptitude",
-    text: "Basic problem-solving and logic. Nothing beyond what you already know.",
-  },
-  {
-    title: "Vibe / Attitude",
-    text: "Energy, curiosity and coachability. Attitude determines altitude.",
-  },
+  { title: "Confidence", text: "Will you raise your hand? We want the student who says 'I'll figure it out.'" },
+  { title: "Communication", text: "Clear, warm, structured. Grammar and vocabulary matter less than being understood." },
+  { title: "Aptitude", text: "Basic problem-solving and logic. Nothing beyond what you already know." },
+  { title: "Vibe / Attitude", text: "Energy, curiosity and coachability. Attitude determines altitude." },
 ];
+
+function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="mb-8 flex flex-col items-center text-center">
+      <h2 className="text-3xl font-normal tracking-tight text-[#E1E0CC] sm:text-4xl">{title}</h2>
+      <p className="mt-3 max-w-2xl text-sm text-gray-500 sm:text-base">{subtitle}</p>
+    </div>
+  );
+}
 
 export default async function HomePage() {
   const auth = await getAuth();
@@ -142,85 +123,17 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-1 flex-col bg-black">
-      <header className="border-b border-slate-800/80">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-          <BrandLogo />
-          <nav className="flex items-center gap-2">
-            {homeHref ? (
-              <Link
-                href={homeHref}
-                className="inline-flex h-10 items-center rounded-full bg-primary-600 px-5 text-sm font-medium text-white hover:bg-primary-700"
-              >
-                Go to dashboard
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="inline-flex h-10 items-center rounded-full px-5 text-sm font-medium text-slate-500 hover:text-slate-300"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex h-10 items-center rounded-full border border-primary-500/50 bg-primary-500/10 px-5 text-sm font-medium text-primary-400 hover:bg-primary-500/20"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
+      <main>
+        <LandingHero homeHref={homeHref} />
+        <About />
+        <Features />
+      </main>
 
-      <main className="tcc-glow mx-auto flex w-full max-w-6xl flex-1 flex-col px-4">
-        {/* Hero */}
-        <section className="flex flex-col items-center py-20 text-center">
-          <p className="mono-label text-primary-400">
-            Patience — you&apos;re about to be impressed.
-          </p>
-          <h1 className="mt-5 max-w-4xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl">
-            We&apos;ll teach you the{" "}
-            <span className="brand-serif font-normal text-primary-400">
-              grass roots of business.
-            </span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg">
-            {env.appName} is hiring curious students as interns — and we don&apos;t
-            expect you to know everything. This first round is a friendly
-            30-minute check of how you think and how you carry yourself.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            {!homeHref ? (
-              <>
-                <Link
-                  href="/register"
-                  className="inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
-                >
-                  Start the assessment
-                </Link>
-                <Link
-                  href="/login"
-                  className="inline-flex h-12 items-center rounded-full border border-slate-700 px-7 text-base font-medium text-slate-300 hover:border-slate-500 hover:text-white"
-                >
-                  I already have an account
-                </Link>
-              </>
-            ) : (
-              <Link
-                href={homeHref}
-                className="inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
-              >
-                Open dashboard
-              </Link>
-            )}
-          </div>
-        </section>
-
+      <main className="tcc-glow mx-auto w-full max-w-6xl flex-1 px-4">
         {/* Deep breath */}
-        <section className="mx-auto mb-20 w-full max-w-3xl overflow-hidden rounded-3xl border border-slate-800 bg-white/5">
+        <section className="mx-auto mb-20 w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-[#101010]">
           <div className="flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-10">
-            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
+            <h2 className="text-2xl font-normal text-[#E1E0CC] sm:text-3xl">
               Before you begin — take a deep breath.
             </h2>
             <p className="max-w-xl text-sm leading-relaxed text-slate-500 sm:text-base">
@@ -228,30 +141,20 @@ export default async function HomePage() {
               That&apos;s the person we want to meet — calm, confident, ready. This
               assessment measures your potential, not your perfection.
             </p>
-            <span className="mono-label mt-1 text-slate-500">
-              Inhale · Hold · Exhale
-            </span>
+            <span className="mono-label mt-1 text-slate-500">Inhale · Hold · Exhale</span>
           </div>
         </section>
 
         {/* What this round looks at */}
         <section className="mb-20">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-              What this round looks for
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-500 sm:text-base">
-              We&apos;re not looking for a perfect score. We&apos;re looking for the
-              things that make someone great in business.
-            </p>
-          </div>
+          <SectionHeading
+            title="What this round looks for"
+            subtitle="We're not looking for a perfect score. We're looking for the things that make someone great in business."
+          />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {QUALITIES.map((c) => (
-              <div
-                key={c.title}
-                className="rounded-2xl border border-slate-800 bg-white/5 p-6"
-              >
-                <p className="font-semibold text-slate-900">{c.title}</p>
+              <div key={c.title} className="rounded-2xl border border-white/10 bg-[#101010] p-6">
+                <p className="font-medium text-[#E1E0CC]">{c.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-slate-500">{c.text}</p>
               </div>
             ))}
@@ -260,24 +163,17 @@ export default async function HomePage() {
 
         {/* Test instructions */}
         <section className="mb-20">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-              How the assessment works
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-500 sm:text-base">
-              Six simple steps, 30 minutes of your time, zero stress.
-            </p>
-          </div>
+          <SectionHeading
+            title="How the assessment works"
+            subtitle="Six simple steps, 30 minutes of your time, zero stress."
+          />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {STEPS.map((s, i) => (
-              <div
-                key={s.title}
-                className="rounded-2xl border border-slate-800 bg-white/5 p-6"
-              >
+              <div key={s.title} className="rounded-2xl border border-white/10 bg-[#101010] p-6">
                 <span className="mono-label text-primary-400">
                   {(i + 1).toString().padStart(2, "0")}
                 </span>
-                <p className="mt-3 font-semibold text-slate-900">{s.title}</p>
+                <p className="mt-3 font-medium text-[#E1E0CC]">{s.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-slate-500">{s.text}</p>
               </div>
             ))}
@@ -285,30 +181,19 @@ export default async function HomePage() {
         </section>
 
         {/* Roles & JDs */}
-        <section className="mb-20">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-              Roles we&apos;re offering
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-500 sm:text-base">
-              Four internship tracks. One goal: teach you business from the
-              ground up. Packages range from ₹4.2 to ₹6 LPA.
-            </p>
-          </div>
+        <section id="roles" className="mb-20 scroll-mt-24">
+          <SectionHeading
+            title="Roles we're offering"
+            subtitle="Four internship tracks. One goal: teach you business from the ground up. Packages range from ₹4.2 to ₹6 LPA."
+          />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {ROLES.map((r) => (
-              <div
-                key={r.title}
-                className="rounded-2xl border border-slate-800 bg-white/5 p-6"
-              >
-                <p className="font-semibold text-slate-900">{r.title}</p>
+              <div key={r.title} className="rounded-2xl border border-white/10 bg-[#101010] p-6">
+                <p className="font-medium text-[#E1E0CC]">{r.title}</p>
                 <p className="text-sm text-slate-500">{r.blurb}</p>
                 <ul className="mt-4 space-y-2">
                   {r.jd.map((line) => (
-                    <li
-                      key={line}
-                      className="flex items-start gap-2 text-sm text-slate-500"
-                    >
+                    <li key={line} className="flex items-start gap-2 text-sm text-slate-500">
                       <span className="mt-[9px] h-px w-3 shrink-0 bg-primary-400" />
                       {line}
                     </li>
@@ -320,45 +205,32 @@ export default async function HomePage() {
         </section>
 
         {/* FAQ */}
-        <section className="mb-20">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-              Questions students ask us
-            </h2>
-            <p className="mt-3 text-sm text-slate-500">
-              If it&apos;s on your mind, it&apos;s probably here.
-            </p>
-          </div>
+        <section id="faq" className="mb-20 scroll-mt-24">
+          <SectionHeading
+            title="Questions students ask us"
+            subtitle="If it's on your mind, it's probably here."
+          />
           <div className="mx-auto max-w-3xl">
             <Faq items={FAQS} />
           </div>
         </section>
 
         {/* CTA */}
-        <section className="mx-auto mb-20 w-full max-w-3xl overflow-hidden rounded-3xl border border-slate-800 tcc-glow">
+        <section className="mx-auto mb-20 w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 tcc-glow">
           <div className="flex flex-col items-center gap-4 px-6 py-12 text-center sm:px-10">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            <h2 className="text-3xl font-normal tracking-tight text-[#E1E0CC]">
               Ready to show us your best self?
             </h2>
             <p className="max-w-xl text-sm leading-relaxed text-slate-500 sm:text-base">
               Another deep breath in… and out. Then press start. We&apos;re honestly
               excited to meet you.
             </p>
-            {!homeHref ? (
-              <Link
-                href="/register"
-                className="mt-2 inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
-              >
-                Register to take the test
-              </Link>
-            ) : (
-              <Link
-                href={homeHref}
-                className="mt-2 inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
-              >
-                Open dashboard
-              </Link>
-            )}
+            <Link
+              href={homeHref ?? "/register"}
+              className="mt-2 inline-flex h-12 items-center rounded-full bg-primary-500 px-7 text-base font-medium text-[#101010] hover:bg-primary-600"
+            >
+              {homeHref ? "Open dashboard" : "Register to take the test"}
+            </Link>
           </div>
         </section>
       </main>

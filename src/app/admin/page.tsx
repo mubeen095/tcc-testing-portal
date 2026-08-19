@@ -101,7 +101,7 @@ select: {
           </a>
           <Link
             href="/admin/candidates"
-            className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-700"
+            className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary-500 px-4 text-sm font-medium text-[#101010] shadow-sm hover:bg-primary-600"
           >
             <UserPlus className="h-4 w-4" /> Add candidate
           </Link>

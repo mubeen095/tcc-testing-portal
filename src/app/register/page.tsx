@@ -15,7 +15,7 @@ export default async function RegisterPage() {
   }
   return (
     <div className="flex min-h-full flex-col bg-black">
-      <header className="border-b border-slate-800">
+      <header className="border-b border-white/10">
         <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-3">
           <Link href="/">
             <BrandLogo size="sm" />

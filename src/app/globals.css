@@ -1,37 +1,38 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+  --font-sans: "Almarai", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", monospace;
   --font-serif: "Instrument Serif", Georgia, serif;
 
-  /* ── Structure / text (light values render dark so the app is a dark theme) ── */
+  /* ── Warm neutral scale (dark-first: lighter tokens = lighter surfaces inverts
+     the classic palette so the whole app renders dark and moody) ── */
   --color-slate-50: #0a0a0a;
-  --color-slate-100: #141414;
-  --color-slate-200: #1f1f1f;
-  --color-slate-300: #2b2b2b;
-  --color-slate-400: #6b7480;
-  --color-slate-500: #9aa3af;
-  --color-slate-600: #b8bfc7;
-  --color-slate-700: #d3d7dd;
-  --color-slate-800: #eceff3;
-  --color-slate-900: #f5f7fa;
+  --color-slate-100: #131313;
+  --color-slate-200: #1e1e1e;
+  --color-slate-300: #2a2a2a;
+  --color-slate-400: #6b6b75;
+  --color-slate-500: #98989f;
+  --color-slate-600: #b5b5bb;
+  --color-slate-700: #d0d0d4;
+  --color-slate-800: #e4e4e6;
+  --color-slate-900: #f1f0ed;
   --color-slate-950: #ffffff;
 
-  /* ── The Coding Company blue ── */
-  --color-primary-50: #eaf4ff;
-  --color-primary-100: #d3e9ff;
-  --color-primary-200: #a8d4ff;
-  --color-primary-300: #6bb5ff;
-  --color-primary-400: #3096ff;
-  --color-primary-500: #0064ff;
-  --color-primary-600: #0057de;
-  --color-primary-700: #0a63ea;
-  --color-primary-800: #003a96;
-  --color-primary-900: #002d74;
-  --color-primary-950: #002054;
+  /* ── Prisma warm cream primary ── */
+  --color-primary-50: #1e1c14;
+  --color-primary-100: #2a271c;
+  --color-primary-200: #393528;
+  --color-primary-300: #55503c;
+  --color-primary-400: #c9c6b2;
+  --color-primary-500: #dedbc8;
+  --color-primary-600: #c6c2ad;
+  --color-primary-700: #a9a591;
+  --color-primary-800: #7e7a68;
+  --color-primary-900: #2b2820;
+  --color-primary-950: #17150f;
 
   /* ── Status colors rendered for a dark theme ── */
   --color-rose-50: #2b0f14;
@@ -118,8 +119,8 @@
   }
 
   body {
-    background: #050505;
-    color: #f5f7fa;
+    background: #000000;
+    color: #e1e0cc;
     letter-spacing: -0.011em;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -131,12 +132,16 @@
   background: color-mix(in srgb, var(--color-primary-500) 30%, transparent);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #3a3a3a;
   border-radius: 9999px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
@@ -159,19 +164,62 @@
 
 .tcc-glow {
   background:
-    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0, 100, 255, 0.25) 0%, rgba(0, 100, 255, 0.08) 55%, transparent 85%);
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(222, 219, 200, 0.18) 0%, rgba(222, 219, 200, 0.05) 55%, transparent 85%);
 }
 
-/* Surfaces that were white in the light theme become dark cards in this
-   The Coding Company–inspired dark skin. Un-layered so they beat Tailwind's
-   layered `.bg-white` utility (otherwise inputs/cards stay white while the
-   remapped near-white text tokens render invisible while typing). */
+/* Prisma noise textures */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+/* Liquid-glass hairline surface */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Surfaces that were white in the light theme become warm dark cards.
+   Un-layered so they beat Tailwind's layered `.bg-white` utility (otherwise
+   inputs/cards stay white while the remapped near-white text tokens render
+   invisible while typing). */
 .bg-white {
-  background-color: #0e0e0e;
+  background-color: #101010;
 }
 .bg-white\/80 {
-  background-color: rgba(12, 12, 12, 0.72);
+  background-color: rgba(16, 16, 16, 0.72);
 }
 .bg-white\/90 {
-  background-color: rgba(12, 12, 12, 0.9);
+  background-color: rgba(16, 16, 16, 0.9);
+}
+.bg-white\/5 {
+  background-color: #101010;
 }

@@ -41,7 +41,7 @@ export function BrandLogo({
 
 export function AppFooter({ children }: { children?: ReactNode }) {
   return (
-    <footer className="border-t border-slate-800 bg-black">
+    <footer className="border-t border-white/10 bg-black">
       <div className="mx-auto w-full max-w-6xl px-4 py-6 text-center text-sm text-slate-500">
         {children ?? (
           <>

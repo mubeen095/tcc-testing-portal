@@ -518,19 +518,19 @@ export function AssessmentRunner() {
                       onClick={() => saveAnswer(currentQuestion.id, opt.id)}
                       className={`group flex w-full items-start gap-3 rounded-xl border-2 px-4 py-3 text-left transition ${
                         selected
-                          ? "border-primary-600 bg-primary-50"
+                          ? "border-primary-500 bg-primary-50"
                           : "border-slate-200 bg-white hover:border-primary-300 hover:bg-primary-50/40"
                       }`}
                     >
                       <span
                         className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
                           selected
-                            ? "border-primary-600 bg-primary-600"
+                            ? "border-primary-500 bg-primary-500"
                             : "border-slate-300 bg-white group-hover:border-primary-400"
                         }`}
                       >
                         {selected ? (
-                          <span className="h-2 w-2 rounded-full bg-white" />
+                          <span className="h-2 w-2 rounded-full bg-[#101010]" />
                         ) : null}
                       </span>
                       <span className="text-sm leading-relaxed text-slate-800">
@@ -626,7 +626,7 @@ export function AssessmentRunner() {
                               title={`Question ${q.number}`}
                               className={`flex h-9 items-center justify-center rounded-lg text-xs font-semibold transition ${
                                 status === "current"
-                                  ? "bg-primary-600 text-white shadow"
+                                  ? "bg-primary-500 text-[#101010] shadow"
                                   : status === "answered"
                                   ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
                                   : "bg-slate-100 text-slate-500 hover:bg-slate-200"

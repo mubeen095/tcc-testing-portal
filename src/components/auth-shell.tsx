@@ -11,7 +11,7 @@ export function AuthShell({
 }) {
   return (
     <div className="flex min-h-full flex-1 flex-col">
-      <header className="relative z-10 border-b border-slate-800 bg-black/80 backdrop-blur-md">
+      <header className="relative z-10 border-b border-white/10 bg-black/80 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3">
           <Link href="/" aria-label="Home">
             <BrandLogo />

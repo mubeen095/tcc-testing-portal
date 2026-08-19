@@ -4,8 +4,6 @@ import { useRef } from "react";
 import {
   motion,
   useInView,
-  useScroll,
-  useTransform,
 } from "framer-motion";
 
 export const EASE_PULL = [0.16, 1, 0.3, 1] as const;
@@ -96,31 +94,17 @@ export function WordsPullUpMultiStyle({
 
 export function RevealParagraph({ text }: { text: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.8", "end 0.2"],
-  });
-  const chars = text.split("");
-  const total = chars.length;
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <p
+    <motion.p
       ref={ref}
+      initial={{ opacity: 0, y: 16 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{ duration: 0.8, ease: EASE_PULL }}
       className="mx-auto max-w-2xl text-[#DEDBC8] text-xs leading-relaxed sm:text-sm md:text-base"
     >
-      {chars.map((char, i) => {
-        const charProgress = i / total;
-        const opacity = useTransform(
-          scrollYProgress,
-          [charProgress - 0.1, charProgress + 0.05],
-          [0.2, 1]
-        );
-        return (
-          <motion.span key={i} style={{ opacity }}>
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        );
-      })}
-    </p>
+      {text}
+    </motion.p>
   );
 }

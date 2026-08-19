@@ -459,8 +459,8 @@ export function AssessmentRunner() {
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <span
-              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-cameraStatus === "on"
+              className={`hidden items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold sm:inline-flex ${
+                cameraStatus === "on"
                     ? "bg-emerald-50 text-emerald-600"
                     : "bg-rose-50 text-rose-600"
               }`}

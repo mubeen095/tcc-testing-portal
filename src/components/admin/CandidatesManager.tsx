@@ -190,7 +190,64 @@ export function CandidatesManager() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden">
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {rows.length === 0 ? (
+          <Card className="p-6 text-center text-sm text-slate-500">
+            No candidates match your filters.
+          </Card>
+        ) : (
+          rows.map((r) => (
+            <Card key={r.candidateId} className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  {r.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={r.photoUrl}
+                      alt=""
+                      className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-slate-200"
+                    />
+                  ) : (
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-500">
+                      {r.fullName.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                  <div className="min-w-0">
+                    <p className="truncate font-medium text-slate-900">{r.fullName}</p>
+                    <p className="truncate text-xs text-slate-500">{r.email}</p>
+                  </div>
+                </div>
+                <DecisionBadge decision={r.decision} />
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <AttemptBadge status={r.attemptStatus} />
+                {r.testSetCode ? (
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-600">
+                    Set {r.testSetCode}
+                  </span>
+                ) : null}
+                <span className="max-w-full truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                  {r.college} · {r.branch} · {r.academicYear} · {r.rollNumber}
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+                <span className="text-xs text-slate-400">{r.phone}</span>
+                <Link href={`/admin/candidates/${r.candidateId}`}>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-3.5 w-3.5" /> View
+                  </Button>
+                </Link>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+
+      {/* Desktop table */}
+      <Card className="hidden overflow-hidden md:block">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
@@ -262,20 +319,21 @@ export function CandidatesManager() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
-          <span>
-            Page {page} of {totalPages} · {total} candidates
-          </span>
-          <div className="flex gap-2">
-            <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
-              Previous
-            </Button>
-            <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
-              Next
-            </Button>
-          </div>
-        </div>
       </Card>
+
+      <div className="flex flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <span>
+          Page {page} of {totalPages} · {total} candidates
+        </span>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+            Previous
+          </Button>
+          <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
+            Next
+          </Button>
+        </div>
+      </div>
 
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Add candidate" wide>
         <form onSubmit={submitCreate} className="space-y-4">

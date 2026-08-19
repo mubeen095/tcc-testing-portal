@@ -229,7 +229,136 @@ export function ResultsTable() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden">
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {rows.length === 0 ? (
+          <Card className="p-6 text-center text-sm text-slate-500">
+            No results match your filters.
+          </Card>
+        ) : (
+          rows.map((r) => (
+            <Card key={r.candidateId} className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  {r.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={r.photoUrl}
+                      alt=""
+                      className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-slate-200"
+                    />
+                  ) : (
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-500">
+                      {r.fullName.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                  <div className="min-w-0">
+                    <p className="truncate font-medium text-slate-900">{r.fullName}</p>
+                    <p className="truncate text-xs text-slate-500">
+                      {r.email} · {r.phone}
+                    </p>
+                  </div>
+                </div>
+                <DecisionBadge decision={r.decision} />
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <AttemptBadge status={r.attemptStatus} />
+                {r.testSetCode ? (
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 font-mono text-[11px] font-semibold text-slate-600">
+                    Set {r.testSetCode}
+                  </span>
+                ) : null}
+                <span className="max-w-full truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                  {r.college} · {r.branch} · {r.academicYear} · {r.rollNumber}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-4 gap-2 text-center">
+                <div className="rounded-lg bg-slate-50 px-1 py-2">
+                  <p className="text-sm font-bold text-slate-900">
+                    {r.attemptStatus === "NOT_STARTED" ? "—" : r.communicationScore}
+                  </p>
+                  <p className="text-[10px] text-slate-400">Comm</p>
+                </div>
+                <div className="rounded-lg bg-slate-50 px-1 py-2">
+                  <p className="text-sm font-bold text-slate-900">
+                    {r.attemptStatus === "NOT_STARTED" ? "—" : r.aptitudeScore}
+                  </p>
+                  <p className="text-[10px] text-slate-400">Apt</p>
+                </div>
+                <div className="rounded-lg bg-slate-50 px-1 py-2">
+                  <p className="text-sm font-bold text-slate-900">
+                    {r.attemptStatus === "NOT_STARTED" ? "—" : r.vibeScore}
+                  </p>
+                  <p className="text-[10px] text-slate-400">Vibe</p>
+                </div>
+                <div className="rounded-lg bg-primary-50 px-1 py-2">
+                  <p className="text-sm font-bold text-primary-700">
+                    {r.attemptStatus === "NOT_STARTED" ? "—" : `${r.totalScore}/36`}
+                  </p>
+                  <p className="text-[10px] text-primary-500">Overall</p>
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
+                <div className="flex items-center gap-3 text-xs text-slate-500">
+                  <span>{formatDuration(r.durationSeconds)}</span>
+                  <span
+                    className={`font-semibold ${
+                      r.tabSwitchCount > 0 ? "text-rose-600" : "text-slate-400"
+                    }`}
+                  >
+                    {r.tabSwitchCount} tabs
+                  </span>
+                </div>
+                <div className="flex gap-1">
+                  <Link href={`/admin/results/${r.candidateId}`} title="View / review">
+                    <Button variant="ghost" size="sm">
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={r.attemptStatus === "NOT_STARTED" || r.decision === "SELECTED"}
+                    onClick={() => decide(r, "SELECTED")}
+                    className="text-emerald-600"
+                    title="Select candidate"
+                  >
+                    <BadgeCheck className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={r.attemptStatus === "NOT_STARTED" || r.decision === "REJECTED"}
+                    onClick={() => decide(r, "REJECTED")}
+                    className="text-rose-600"
+                    title="Reject candidate"
+                  >
+                    <XCircle className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setNotesTarget(r);
+                      setNotes(r.adminNotes ?? "");
+                      setNotesError(null);
+                    }}
+                    title="Add admin notes"
+                  >
+                    <StickyNote className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+
+      {/* Desktop table */}
+      <Card className="hidden overflow-hidden md:block">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full min-w-[1200px] text-left text-sm">
             <thead>
@@ -328,14 +457,15 @@ export function ResultsTable() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
-          <span>Page {page} of {totalPages} · {total} results</span>
-          <div className="flex gap-2">
-            <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>Previous</Button>
-            <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>Next</Button>
-          </div>
-        </div>
       </Card>
+
+      <div className="flex flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <span>Page {page} of {totalPages} · {total} results</span>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>Previous</Button>
+          <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>Next</Button>
+        </div>
+      </div>
 
       <Modal open={!!notesTarget} onClose={() => setNotesTarget(null)} title="Admin notes">
         <div className="space-y-4">

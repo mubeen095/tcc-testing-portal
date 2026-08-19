@@ -1,23 +1,5 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  ArrowRight,
-  Award,
-  Briefcase,
-  Camera,
-  CheckCircle2,
-  ClipboardCheck,
-  Clock,
-  Frown,
-  GraduationCap,
-  HeartHandshake,
-  Ruler,
-  ShieldCheck,
-  Sparkles,
-  Target,
-  TimerReset,
-  Wind,
-} from "lucide-react";
 
 import { AppFooter, BrandLogo } from "@/components/brand";
 import { Faq, type FaqItem } from "@/components/Faq";
@@ -63,7 +45,6 @@ const FAQS: FaqItem[] = [
 
 const ROLES = [
   {
-    icon: Target,
     title: "Marketing Intern",
     blurb: "Learn to plan and run real campaigns that get people talking.",
     jd: [
@@ -74,7 +55,6 @@ const ROLES = [
     ],
   },
   {
-    icon: HeartHandshake,
     title: "Inside Sales Intern",
     blurb: "Learn the art of opening conversations and closing deals.",
     jd: [
@@ -85,7 +65,6 @@ const ROLES = [
     ],
   },
   {
-    icon: Ruler,
     title: "Lead Generation Intern",
     blurb: "Become the person who finds the people who'll buy.",
     jd: [
@@ -96,7 +75,6 @@ const ROLES = [
     ],
   },
   {
-    icon: Award,
     title: "SLO (Sales & Lead Officer)",
     blurb: "Own the funnel from first touch to signed deal.",
     jd: [
@@ -110,34 +88,47 @@ const ROLES = [
 
 const STEPS = [
   {
-    icon: ClipboardCheck,
     title: "Create your account",
     text: "Register in under two minutes with your email and basic details.",
   },
   {
-    icon: Camera,
     title: "Add your photo",
     text: "Upload or capture a clear photo of yourself — it goes to the recruitment team only.",
   },
   {
-    icon: ShieldCheck,
     title: "Camera consent",
     text: "Allow camera access and read the short instructions. We keep an eye on focus, not on judging you.",
   },
   {
-    icon: Clock,
     title: "30 minutes, 3 rounds",
     text: "Communication & Grammar, Aptitude and a Vibe Check. A test set is assigned to you automatically.",
   },
   {
-    icon: TimerReset,
     title: "Stay in one tab",
     text: "Your answers auto-save. Switching tabs can end your test early, so stay focused.",
   },
   {
-    icon: CheckCircle2,
     title: "Submit & relax",
     text: "Hit submit and you're done. Our team reviews your results and reaches out for the next round.",
+  },
+];
+
+const QUALITIES = [
+  {
+    title: "Confidence",
+    text: "Will you raise your hand? We want the student who says 'I'll figure it out.'",
+  },
+  {
+    title: "Communication",
+    text: "Clear, warm, structured. Grammar and vocabulary matter less than being understood.",
+  },
+  {
+    title: "Aptitude",
+    text: "Basic problem-solving and logic. Nothing beyond what you already know.",
+  },
+  {
+    title: "Vibe / Attitude",
+    text: "Energy, curiosity and coachability. Attitude determines altitude.",
   },
 ];
 
@@ -158,9 +149,9 @@ export default async function HomePage() {
             {homeHref ? (
               <Link
                 href={homeHref}
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-primary-600 px-5 text-sm font-medium text-white hover:bg-primary-700"
+                className="inline-flex h-10 items-center rounded-full bg-primary-600 px-5 text-sm font-medium text-white hover:bg-primary-700"
               >
-                Go to dashboard <ArrowRight className="h-4 w-4" />
+                Go to dashboard
               </Link>
             ) : (
               <>
@@ -204,9 +195,9 @@ export default async function HomePage() {
               <>
                 <Link
                   href="/register"
-                  className="inline-flex h-12 items-center gap-2 rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
+                  className="inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
                 >
-                  Start the assessment <ArrowRight className="h-4 w-4" />
+                  Start the assessment
                 </Link>
                 <Link
                   href="/login"
@@ -218,9 +209,9 @@ export default async function HomePage() {
             ) : (
               <Link
                 href={homeHref}
-                className="inline-flex h-12 items-center gap-2 rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
+                className="inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
               >
-                Open dashboard <ArrowRight className="h-4 w-4" />
+                Open dashboard
               </Link>
             )}
           </div>
@@ -229,9 +220,6 @@ export default async function HomePage() {
         {/* Deep breath */}
         <section className="mx-auto mb-20 w-full max-w-3xl overflow-hidden rounded-3xl border border-slate-800 bg-white/5">
           <div className="flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-10">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-500/15">
-              <Wind className="h-7 w-7 text-primary-400" />
-            </div>
             <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
               Before you begin — take a deep breath.
             </h2>
@@ -258,36 +246,12 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                icon: Sparkles,
-                title: "Confidence",
-                text: "Will you raise your hand? We want the student who says 'I'll figure it out.'",
-              },
-              {
-                icon: GraduationCap,
-                title: "Communication",
-                text: "Clear, warm, structured. Grammar and vocabulary matter less than being understood.",
-              },
-              {
-                icon: Target,
-                title: "Aptitude",
-                text: "Basic problem-solving and logic. Nothing beyond what you already know.",
-              },
-              {
-                icon: Frown,
-                title: "Vibe / Attitude",
-                text: "Energy, curiosity and coachability. Attitude determines altitude.",
-              },
-            ].map((c) => (
+            {QUALITIES.map((c) => (
               <div
                 key={c.title}
                 className="rounded-2xl border border-slate-800 bg-white/5 p-6"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-500/15">
-                  <c.icon className="h-5 w-5 text-primary-400" />
-                </div>
-                <p className="mt-3 font-semibold text-slate-900">{c.title}</p>
+                <p className="font-semibold text-slate-900">{c.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-slate-500">{c.text}</p>
               </div>
             ))}
@@ -310,12 +274,9 @@ export default async function HomePage() {
                 key={s.title}
                 className="rounded-2xl border border-slate-800 bg-white/5 p-6"
               >
-                <div className="flex items-center gap-3">
-                  <span className="mono-label text-primary-400">
-                    {(i + 1).toString().padStart(2, "0")}
-                  </span>
-                  <s.icon className="h-5 w-5 text-primary-400" />
-                </div>
+                <span className="mono-label text-primary-400">
+                  {(i + 1).toString().padStart(2, "0")}
+                </span>
                 <p className="mt-3 font-semibold text-slate-900">{s.title}</p>
                 <p className="mt-1 text-sm leading-relaxed text-slate-500">{s.text}</p>
               </div>
@@ -340,22 +301,15 @@ export default async function HomePage() {
                 key={r.title}
                 className="rounded-2xl border border-slate-800 bg-white/5 p-6"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/15">
-                    <r.icon className="h-5 w-5 text-primary-400" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-900">{r.title}</p>
-                    <p className="text-sm text-slate-500">{r.blurb}</p>
-                  </div>
-                </div>
+                <p className="font-semibold text-slate-900">{r.title}</p>
+                <p className="text-sm text-slate-500">{r.blurb}</p>
                 <ul className="mt-4 space-y-2">
                   {r.jd.map((line) => (
                     <li
                       key={line}
                       className="flex items-start gap-2 text-sm text-slate-500"
                     >
-                      <Briefcase className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary-400" />
+                      <span className="mt-[9px] h-px w-3 shrink-0 bg-primary-400" />
                       {line}
                     </li>
                   ))}
@@ -393,16 +347,16 @@ export default async function HomePage() {
             {!homeHref ? (
               <Link
                 href="/register"
-                className="mt-2 inline-flex h-12 items-center gap-2 rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
+                className="mt-2 inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
               >
-                Register to take the test <ArrowRight className="h-4 w-4" />
+                Register to take the test
               </Link>
             ) : (
               <Link
                 href={homeHref}
-                className="mt-2 inline-flex h-12 items-center gap-2 rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
+                className="mt-2 inline-flex h-12 items-center rounded-full bg-primary-600 px-7 text-base font-medium text-white hover:bg-primary-700"
               >
-                Open dashboard <ArrowRight className="h-4 w-4" />
+                Open dashboard
               </Link>
             )}
           </div>
@@ -412,7 +366,6 @@ export default async function HomePage() {
       <AppFooter>
         © {new Date().getFullYear()} {env.appName}. Internship recruitment.
         <span className="mx-2 text-slate-700">·</span>
-        <ShieldCheck className="mr-1 inline h-3.5 w-3.5 text-primary-500" />
         Secured &amp; proctored
       </AppFooter>
     </div>

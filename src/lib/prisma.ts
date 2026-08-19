@@ -9,7 +9,8 @@ function createClient() {
     "postgresql://tcc:tcc_dev_password@localhost:5433/tcc_portal?schema=public";
   const useSsl =
     process.env.DATABASE_SSL === "true" ||
-    (!process.env.DATABASE_SSL && new URL(connectionString).hostname.includes("supabase.co"));
+    (!process.env.DATABASE_SSL &&
+      new URL(connectionString).hostname.includes("supabase"));
   const adapter = new PrismaPg({
     connectionString,
     ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {}),

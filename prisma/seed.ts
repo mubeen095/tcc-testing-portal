@@ -7,7 +7,7 @@ const connectionString = process.env.DATABASE_URL ?? "";
 const useSsl =
   process.env.DATABASE_SSL === "true" ||
   (!process.env.DATABASE_SSL &&
-    new URL(connectionString).hostname.endsWith(".supabase.co"));
+    new URL(connectionString).hostname.includes("supabase"));
 const adapter = new PrismaPg({
   connectionString,
   ...(useSsl ? { ssl: { rejectUnauthorized: false } } : {}),

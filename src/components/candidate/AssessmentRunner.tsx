@@ -546,7 +546,7 @@ export function AssessmentRunner() {
                 })}
               </div>
 
-              <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-5">
+              <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-5">
                 <Button
                   variant="outline"
                   disabled={current === 0}
@@ -554,7 +554,7 @@ export function AssessmentRunner() {
                 >
                   <ArrowLeft className="h-4 w-4" /> Previous
                 </Button>
-                <span className="text-sm text-slate-500">
+                <span className="order-last w-full text-center text-sm text-slate-500 sm:order-none sm:w-auto">
                   {answeredCount} of {totalQuestions} answered
                 </span>
                 {current < totalQuestions - 1 ? (

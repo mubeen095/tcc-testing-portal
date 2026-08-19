@@ -113,7 +113,7 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 flex items-baseline justify-between text-sm font-medium text-slate-700">
+      <span className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5 text-sm font-medium text-slate-700">
         <span>
           {label}
           {required ? <span className="text-rose-500"> *</span> : null}
@@ -204,7 +204,7 @@ export function Modal({
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-3"
       role="dialog"
       aria-modal="true"
     >
@@ -213,7 +213,7 @@ export function Modal({
         onClick={onClose}
       />
       <div
-        className={`relative w-full ${wide ? "max-w-3xl" : "max-w-lg"} max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl scrollbar-thin`}
+        className={`relative max-h-[92dvh] w-full overflow-y-auto rounded-t-2xl bg-white p-6 shadow-2xl scrollbar-thin sm:max-h-[90vh] sm:rounded-2xl ${wide ? "sm:max-w-3xl" : "sm:max-w-lg"}`}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <h3 className="text-lg font-semibold text-slate-900">{title}</h3>

@@ -95,8 +95,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex border-t border-slate-200 bg-white lg:hidden">
-        {NAV.slice(0, 5).map((item) => {
+      <nav className="fixed inset-x-0 bottom-0 z-30 flex items-stretch overflow-x-auto border-t border-slate-200 bg-white lg:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {NAV.map((item) => {
           const active =
             pathname === item.href ||
             (item.href !== "/admin" && pathname.startsWith(item.href));
@@ -104,7 +104,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-medium ${
+              className={`flex min-w-[76px] flex-col items-center justify-center gap-1 px-2 py-2 text-[10px] font-medium ${
                 active ? "text-primary-700" : "text-slate-500"
               }`}
             >
@@ -113,17 +113,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Link>
           );
         })}
-        <Link
-          href="/admin/settings"
-          className={`flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-medium ${
-            pathname.startsWith("/admin/settings")
-              ? "text-primary-700"
-              : "text-slate-500"
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-          Settings
-        </Link>
       </nav>
 
       <main className="flex-1 px-4 pb-20 pt-16 lg:ml-60 lg:px-8 lg:pb-8 lg:pt-8">

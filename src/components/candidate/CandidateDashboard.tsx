@@ -45,13 +45,23 @@ export function CandidateDashboard() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/candidate/me", { cache: "no-store" })
-      .then(async (res) => {
+    let active = true;
+    async function loadDash() {
+      try {
+        const res = await fetch("/api/candidate/me", { cache: "no-store" });
         const body = await res.json();
         if (!res.ok) throw new Error(body.error ?? "Failed to load dashboard");
-        setData(body);
-      })
-      .catch((e) => setError(e.message));
+        if (active) setData(body);
+      } catch (e) {
+        if (active) setError((e as Error).message);
+      }
+    }
+    loadDash();
+    const interval = setInterval(loadDash, 10000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
   }, []);
 
   if (error) {
@@ -93,7 +103,14 @@ export function CandidateDashboard() {
       {!profile.testSetId && !attempt ? (
         <Alert tone="warning">
           <strong>No test set assigned yet.</strong> The recruitment team will
-          assign your paper set (A, B or C). Check back shortly.
+          assign your paper set (A, B or C). This page updates automatically —
+          check back shortly.
+        </Alert>
+      ) : profile.testSetId && !attempt ? (
+        <Alert tone="success">
+          <strong>Set {profile.testSetCode} assigned.</strong> The recruitment
+          team has sent your paper set. Complete the steps below to unlock and
+          start your assessment.
         </Alert>
       ) : null}
 

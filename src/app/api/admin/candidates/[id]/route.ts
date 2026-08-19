@@ -54,6 +54,21 @@ export async function PATCH(
       );
     }
 
+    if (profileData.testSetId !== undefined) {
+      if (profileData.testSetId === null) {
+        return NextResponse.json(
+          { error: "A test set must be assigned to the candidate." },
+          { status: 422 }
+        );
+      }
+      const testSet = await prisma.testSet.findUnique({
+        where: { id: profileData.testSetId },
+      });
+      if (!testSet) {
+        return NextResponse.json({ error: "Test set not found" }, { status: 404 });
+      }
+    }
+
     const updated = await prisma.candidateProfile.update({
       where: { id },
       data: profileData,

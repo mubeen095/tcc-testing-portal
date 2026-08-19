@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
       branch: sp.get("branch") ?? undefined,
       year: sp.get("year") ?? undefined,
       testSetId: sp.get("testSetId") ?? undefined,
+      unassigned: sp.get("unassigned") === "1" ? true : undefined,
       decision: (sp.get("decision") as ResultsQuery["decision"]) || undefined,
       attemptStatus: (sp.get("status") as ResultsQuery["attemptStatus"]) || undefined,
       sort: (sp.get("sort") as ResultsQuery["sort"]) || undefined,

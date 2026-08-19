@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, Plus, Search, UserCog } from "lucide-react";
+import { Eye, Plus, Search, Send, UserCog } from "lucide-react";
 
 import {
   Alert,
   Button,
   Card,
+  CardHeader,
   Field,
   Input,
   Modal,
@@ -54,6 +55,9 @@ const initialCreate = {
 export function CandidatesManager() {
   const router = useRouter();
   const [rows, setRows] = useState<Row[] | null>(null);
+  const [unassigned, setUnassigned] = useState<Row[] | null>(null);
+  const [assigningId, setAssigningId] = useState<string | null>(null);
+  const [assignFlash, setAssignFlash] = useState<{ name: string; code: string } | null>(null);
   const [filters, setFilters] = useState<Filters>({ colleges: [], branches: [], years: [], testSets: [] });
   const [search, setSearch] = useState("");
   const [college, setCollege] = useState("");
@@ -79,16 +83,22 @@ export function CandidatesManager() {
     sp.set("page", String(page));
     sp.set("sort", "newest");
     try {
-      const [rowsRes, filterRes] = await Promise.all([
+      const [rowsRes, filterRes, unassignedRes] = await Promise.all([
         fetch(`/api/admin/candidates?${sp.toString()}`, { cache: "no-store" }),
         fetch("/api/admin/filters", { cache: "no-store" }),
+        fetch("/api/admin/candidates?unassigned=1&pageSize=200&sort=newest", { cache: "no-store" }),
       ]);
-      const [rowsBody, filterBody] = await Promise.all([rowsRes.json().catch(() => ({})), filterRes.json().catch(() => ({}))]);
+      const [rowsBody, filterBody, unassignedBody] = await Promise.all([
+        rowsRes.json().catch(() => ({})),
+        filterRes.json().catch(() => ({})),
+        unassignedRes.json().catch(() => ({})),
+      ]);
       if (!rowsRes.ok) throw new Error(rowsBody.error ?? "Failed to load");
       setRows(rowsBody.rows ?? []);
       setTotal(rowsBody.total ?? 0);
       setTotalPages(rowsBody.totalPages ?? 1);
       if (filterRes.ok) setFilters(filterBody);
+      setUnassigned(unassignedRes.ok ? unassignedBody.rows ?? [] : []);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -123,6 +133,28 @@ export function CandidatesManager() {
       .finally(() => setCreating(false));
   }
 
+  async function assignSet(candidate: Row, testSetId: string, code: string) {
+    setAssigningId(candidate.candidateId);
+    try {
+      const res = await fetch(`/api/admin/candidates/${candidate.candidateId}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ testSetId }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error ?? "Assignment failed");
+      setUnassigned((list) => (list ?? []).filter((c) => c.candidateId !== candidate.candidateId));
+      setAssignFlash({ name: candidate.fullName, code });
+      setTimeout(() => setAssignFlash(null), 4000);
+      load();
+      router.refresh();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setAssigningId(null);
+    }
+  }
+
   if (error) {
     return (
       <div className="space-y-4">
@@ -146,6 +178,76 @@ export function CandidatesManager() {
           <Plus className="h-4 w-4" /> Add candidate
         </Button>
       </header>
+
+      {assignFlash ? (
+        <Alert tone="success">
+          Set {assignFlash.code} assigned to <strong>{assignFlash.name}</strong>. The student can now start the assessment with that set.
+        </Alert>
+      ) : null}
+
+      {/* Assign paper sets */}
+      <Card>
+        <CardHeader
+          title="Assign paper sets"
+          description={`${unassigned?.length ?? 0} student${unassigned?.length === 1 ? "" : "s"} registered and waiting for a set. Click A, B or C to assign and send.`}
+        />
+        {unassigned && unassigned.length === 0 ? (
+          <div className="px-5 py-10 text-center text-sm text-slate-500">
+            No students waiting for a set. Everyone has been assigned.
+          </div>
+        ) : (
+          <ul className="divide-y divide-slate-100">
+            {(unassigned ?? []).map((c) => (
+              <li
+                key={c.candidateId}
+                className="flex flex-wrap items-center justify-between gap-3 px-5 py-3"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  {c.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={c.photoUrl}
+                      alt=""
+                      className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-slate-200"
+                    />
+                  ) : (
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-200 text-xs font-bold text-slate-500">
+                      {c.fullName.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-slate-900">
+                      {c.fullName}
+                    </p>
+                    <p className="truncate text-xs text-slate-500">
+                      {c.email} · {c.college}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {assigningId === c.candidateId ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                      <Send className="h-3.5 w-3.5" /> Sending…
+                    </span>
+                  ) : (
+                    filters.testSets.map((t) => (
+                      <Button
+                        key={t.id}
+                        size="sm"
+                        variant="outline"
+                        className="font-mono"
+                        onClick={() => assignSet(c, t.id, t.code)}
+                      >
+                        Set {t.code}
+                      </Button>
+                    ))
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
 
       <Card className="p-4">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">

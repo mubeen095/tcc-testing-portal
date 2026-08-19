@@ -20,6 +20,14 @@ const ALLOWED_EXT: Record<string, string> = {
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 
+const IS_SERVERLESS = process.env.VERCEL === "1";
+
+function storageConfigError(): Error {
+  return new Error(
+    "Photo storage is not configured. Set SUPABASE_URL and SUPABASE_STORAGE_KEY (and create a public bucket named 'photos'), or BLOB_READ_WRITE_TOKEN, in the deployment environment variables."
+  );
+}
+
 function supabaseStorage() {
   const baseUrl = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_STORAGE_KEY;
@@ -82,7 +90,14 @@ export async function savePhoto(
   }
 
   const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
+  if (IS_SERVERLESS) {
+    throw storageConfigError();
+  }
+  try {
+    await fs.mkdir(uploadDir, { recursive: true });
+  } catch {
+    throw storageConfigError();
+  }
   const filePath = path.join(uploadDir, filename);
   await fs.writeFile(filePath, buffer);
   return { url: `/uploads/${filename}` };
@@ -111,8 +126,9 @@ export async function deletePhotoByUrl(url: string | null | undefined): Promise<
     }
 
     const isLocal =
-      url.startsWith("/uploads/") ||
-      (!url.startsWith("http") && !url.startsWith("blob:"));
+      !IS_SERVERLESS &&
+      (url.startsWith("/uploads/") ||
+        (!url.startsWith("http") && !url.startsWith("blob:")));
     if (isLocal) {
       const clean = url.replace(/^\/?uploads\//, "");
       const filePath = path.join(process.cwd(), "public", "uploads", clean);

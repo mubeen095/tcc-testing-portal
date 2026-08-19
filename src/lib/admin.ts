@@ -9,6 +9,7 @@ export type ResultsQuery = {
   branch?: string;
   year?: string;
   testSetId?: string;
+  unassigned?: boolean;
   decision?: DecisionStatus | "";
   attemptStatus?: AttemptStatus | "";
   minScore?: number;
@@ -107,6 +108,7 @@ export async function fetchResultRows(query: ResultsQuery) {
   if (query.branch) where.branch = query.branch;
   if (query.year) where.academicYear = query.year;
   if (query.testSetId) where.testSetId = query.testSetId;
+  if (query.unassigned) where.testSetId = null;
   if (query.decision) where.evaluation = { decision: query.decision };
   if (query.attemptStatus) where.attempt = { status: query.attemptStatus };
 

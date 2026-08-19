@@ -29,12 +29,11 @@ function storageConfigError(): Error {
 }
 
 function supabaseStorage() {
-  const baseUrl = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_STORAGE_KEY;
-  const bucket = process.env.SUPABASE_STORAGE_BUCKET ?? "photos";
+  const baseUrl = (process.env.SUPABASE_URL ?? "").replace(/\/+$/, "");
+  const key = (process.env.SUPABASE_STORAGE_KEY ?? "").trim();
+  const bucket = (process.env.SUPABASE_STORAGE_BUCKET ?? "photos").trim();
   if (!baseUrl || !key) return null;
-  const host = baseUrl.replace(/\/+$/, "");
-  return { uploadUrl: `${host}/storage/v1/object/${bucket}`, host, key, bucket };
+  return { uploadUrl: `${baseUrl}/storage/v1/object/${bucket}`, host: baseUrl, key, bucket };
 }
 
 export function validatePhotoInput(
@@ -84,7 +83,15 @@ export async function savePhoto(
       body: Buffer.from(buffer),
     });
     if (!res.ok) {
-      throw new Error(`Failed to upload photo (HTTP ${res.status})`);
+      const bodyText = await res.text().catch(() => "");
+      let detail = "";
+      try {
+        const parsed = JSON.parse(bodyText);
+        detail = parsed?.message ?? parsed?.error ?? bodyText;
+      } catch {
+        detail = bodyText;
+      }
+      throw new Error(`Photo upload to Supabase Storage failed (HTTP ${res.status}): ${detail}`);
     }
     return { url: `${sb.host}/storage/v1/object/public/${sb.bucket}/${filename}` };
   }

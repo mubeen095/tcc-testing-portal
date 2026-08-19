@@ -19,9 +19,7 @@ export function About() {
   return (
     <section id="story" className="scroll-mt-24 bg-black px-4 py-24 sm:px-6 md:py-32">
       <div className="mx-auto max-w-6xl rounded-[2rem] bg-[#101010] px-6 py-16 text-center sm:px-10 md:py-24 lg:py-28">
-        <p className="text-primary text-[10px] tracking-[0.2em] sm:text-xs">
-          The Coding Company
-        </p>
+        <p className="mono-label text-primary-400">The Coding Company</p>
 
         <h2 className="mx-auto mt-6 max-w-3xl text-3xl leading-[0.95] sm:text-4xl sm:leading-[0.9] md:text-5xl lg:text-6xl xl:text-7xl">
           <WordsPullUpMultiStyle
@@ -104,9 +102,9 @@ function FeatureCard({
     >
       <div className="flex items-start justify-between">
         <div className="flex h-10 w-10 items-center justify-center rounded bg-white/5 sm:h-12 sm:w-12">
-          <feature.icon size={20} strokeWidth={1.5} className="text-primary" />
+          <feature.icon size={20} strokeWidth={1.5} className="text-primary-400" />
         </div>
-        <span className="text-[0.75rem] font-medium tracking-[0.08em] text-primary/40">
+        <span className="mono-label text-primary-500/70">
           ({feature.number})
         </span>
       </div>
@@ -158,7 +156,7 @@ export function Features() {
             segments={[{ text: "Three rounds. Thirty minutes. Zero stress.", className: "" }]}
           />
           <WordsPullUpMultiStyle
-            className="mt-4 text-xl font-normal text-gray-500 sm:text-2xl md:text-3xl lg:text-4xl"
+            className="mt-4 text-xl font-normal text-slate-500 sm:text-2xl md:text-3xl lg:text-4xl"
             segments={[{ text: "Built to find real talent. Powered by human instinct.", className: "" }]}
           />
         </div>

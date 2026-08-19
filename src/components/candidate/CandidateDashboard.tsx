@@ -85,7 +85,7 @@ export function CandidateDashboard() {
     <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-8">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-800 text-lg font-bold text-white shadow">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 text-lg font-bold text-[#101010] shadow">
             {profile.fullName
               .split(" ")
               .slice(0, 2)

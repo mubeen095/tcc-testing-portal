@@ -63,7 +63,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
               <>
                 <Link
                   href="/login"
-                  className="hidden h-10 items-center rounded-full px-4 text-sm font-medium text-white/70 transition hover:text-white sm:inline-flex"
+                  className="inline-flex h-10 items-center rounded-full px-3 text-sm font-medium text-white/70 transition hover:text-white sm:px-4"
                 >
                   Sign in
                 </Link>
@@ -78,22 +78,49 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
           </div>
         </div>
 
+        {/* Mobile anchor nav */}
+        <nav className="liquid-glass absolute left-1/2 top-[4.75rem] z-10 flex -translate-x-1/2 items-center gap-1 overflow-x-auto whitespace-nowrap rounded-full px-2 py-1.5 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {NAV.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="shrink-0 rounded-full px-3 py-1.5 text-[10px] font-medium tracking-[0.12em] text-white/80 transition-colors duration-200 hover:text-white"
+            >
+              {link.label.toUpperCase()}
+            </a>
+          ))}
+        </nav>
+
         {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 z-20">
-          <div className="grid grid-cols-12 items-end gap-6 px-6 pb-8 sm:px-10 md:px-14 md:pb-12">
-            <div className="col-span-12 md:col-span-8">
-              <p className="mono-label text-primary-300">
+        <div className="absolute inset-x-0 bottom-0 z-20">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-12 items-end gap-x-10 gap-y-8 px-6 pb-10 sm:px-10 md:px-14 md:pb-12">
+            <div className="col-span-12 md:col-span-7">
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: EASE_PULL, delay: 0.25 }}
+                className="mono-label text-primary-400"
+              >
                 {env.appName} · Internships open right now
-              </p>
-              <h1 className="sr-only">Business education for interns, taught from scratch. Apply now.</h1>
+              </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease: EASE_PULL, delay: 0.35 }}
+                className="mt-5 max-w-3xl text-4xl font-normal leading-[0.98] tracking-[-0.02em] text-[#E1E0CC] sm:text-5xl md:text-6xl lg:text-7xl"
+              >
+                We hire you for{" "}
+                <span className="brand-serif text-primary-500">who you are</span>
+                , not what you know.
+              </motion.h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-8 md:col-span-4">
+            <div className="col-span-12 flex flex-col gap-8 md:col-span-5">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: EASE_PULL, delay: 0.5 }}
-                className="text-primary/70 text-xs leading-[1.2] sm:text-sm md:text-base"
+                className="text-sm leading-relaxed text-[#E1E0CC]/75 sm:text-base md:text-base"
               >
                 Here&apos;s the deal — {env.appName} hires curious interns
                 for Marketing, Inside Sales and Lead Generation — no

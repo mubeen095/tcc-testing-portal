@@ -34,7 +34,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-black/30 via-transparent to-black/60" />
 
         {/* Floating navbar */}
-        <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 md:px-8">
+        <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-4 py-3.5 sm:px-5 sm:py-4 md:px-8">
           <Link href="#" aria-label="Home">
             <BrandLogo size="sm" />
           </Link>
@@ -79,7 +79,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
         </div>
 
         {/* Mobile anchor nav */}
-        <nav className="liquid-glass absolute left-1/2 top-[4.75rem] z-10 flex -translate-x-1/2 items-center gap-1 overflow-x-auto whitespace-nowrap rounded-full px-2 py-1.5 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="liquid-glass absolute left-1/2 top-[4.75rem] z-10 flex w-max max-w-[calc(100%-1.5rem)] -translate-x-1/2 items-center gap-1 overflow-x-auto whitespace-nowrap rounded-full px-2 py-1.5 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {NAV.map((link) => (
             <a
               key={link.label}
@@ -92,9 +92,9 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
         </nav>
 
         {/* Bottom content */}
-        <div className="absolute inset-x-0 bottom-0 z-20">
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-12 items-end gap-x-10 gap-y-8 px-6 pb-10 sm:px-10 md:px-14 md:pb-12">
-            <div className="col-span-12 md:col-span-7">
+        <div className="relative z-20 mt-28 md:mt-0 md:absolute md:inset-x-0 md:bottom-0">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-12 items-end gap-x-4 gap-y-8 px-6 pb-10 sm:px-10 md:gap-x-10 md:px-14 md:pb-12">
+            <div className="col-span-12 min-w-0 md:col-span-7">
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease: EASE_PULL, delay: 0.35 }}
-                className="mt-5 max-w-3xl text-4xl font-normal leading-[0.98] tracking-[-0.02em] text-[#E1E0CC] sm:text-5xl md:text-6xl lg:text-7xl"
+                className="mt-5 max-w-3xl text-3xl font-normal leading-[0.98] tracking-[-0.02em] text-[#E1E0CC] sm:text-5xl md:text-6xl lg:text-7xl"
               >
                 We hire you for{" "}
                 <span className="brand-serif text-primary-500">who you are</span>
@@ -115,7 +115,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
               </motion.h1>
             </div>
 
-            <div className="col-span-12 flex flex-col gap-8 md:col-span-5">
+            <div className="col-span-12 flex min-w-0 flex-col gap-8 md:col-span-5">
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

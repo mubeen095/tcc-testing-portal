@@ -252,7 +252,7 @@ export function CandidatesManager() {
       <Card className="p-4">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <div className="relative">
+            <div className="relative min-w-0">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <Input
                 value={search}
@@ -265,25 +265,25 @@ export function CandidatesManager() {
               />
             </div>
           </div>
-          <Select value={college} onChange={(e) => { setCollege(e.target.value); setPage(1); }}>
+          <Select value={college} onChange={(e) => { setCollege(e.target.value); setPage(1); }} className="min-w-0">
             <option value="">All colleges</option>
             {filters.colleges.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </Select>
-          <Select value={branch} onChange={(e) => { setBranch(e.target.value); setPage(1); }}>
+          <Select value={branch} onChange={(e) => { setBranch(e.target.value); setPage(1); }} className="min-w-0">
             <option value="">All branches</option>
             {filters.branches.map((b) => (
               <option key={b} value={b}>{b}</option>
             ))}
           </Select>
-          <Select value={year} onChange={(e) => { setYear(e.target.value); setPage(1); }}>
+          <Select value={year} onChange={(e) => { setYear(e.target.value); setPage(1); }} className="min-w-0">
             <option value="">All years</option>
             {filters.years.map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </Select>
-          <Select value={testSetId} onChange={(e) => { setTestSetId(e.target.value); setPage(1); }}>
+          <Select value={testSetId} onChange={(e) => { setTestSetId(e.target.value); setPage(1); }} className="min-w-0">
             <option value="">All sets</option>
             {filters.testSets.map((t) => (
               <option key={t.id} value={t.id}>{t.code}</option>
@@ -330,7 +330,7 @@ export function CandidatesManager() {
                     Set {r.testSetCode}
                   </span>
                 ) : null}
-                <span className="max-w-full truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                <span className="min-w-0 flex-1 truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
                   {r.college} · {r.branch} · {r.academicYear} · {r.rollNumber}
                 </span>
               </div>

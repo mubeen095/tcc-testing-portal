@@ -269,7 +269,7 @@ export function ResultsTable() {
                     Set {r.testSetCode}
                   </span>
                 ) : null}
-                <span className="max-w-full truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
+                <span className="min-w-0 flex-1 truncate rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600">
                   {r.college} · {r.branch} · {r.academicYear} · {r.rollNumber}
                 </span>
               </div>
@@ -301,7 +301,7 @@ export function ResultsTable() {
                 </div>
               </div>
 
-              <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 sm:flex-nowrap">
                 <div className="flex items-center gap-3 text-xs text-slate-500">
                   <span>{formatDuration(r.durationSeconds)}</span>
                   <span
@@ -312,9 +312,13 @@ export function ResultsTable() {
                     {r.tabSwitchCount} tabs
                   </span>
                 </div>
-                <div className="flex gap-1">
-                  <Link href={`/admin/results/${r.candidateId}`} title="View / review">
-                    <Button variant="ghost" size="sm">
+                <div className="flex w-full gap-2 sm:w-auto">
+                  <Link
+                    href={`/admin/results/${r.candidateId}`}
+                    title="View / review"
+                    className="flex-1 sm:flex-none"
+                  >
+                    <Button variant="ghost" size="sm" className="w-full px-3!">
                       <Eye className="h-4 w-4" />
                     </Button>
                   </Link>
@@ -323,7 +327,7 @@ export function ResultsTable() {
                     size="sm"
                     disabled={r.attemptStatus === "NOT_STARTED" || r.decision === "SELECTED"}
                     onClick={() => decide(r, "SELECTED")}
-                    className="text-emerald-600"
+                    className="flex-1 px-3! text-emerald-600 sm:flex-none"
                     title="Select candidate"
                   >
                     <BadgeCheck className="h-4 w-4" />
@@ -333,7 +337,7 @@ export function ResultsTable() {
                     size="sm"
                     disabled={r.attemptStatus === "NOT_STARTED" || r.decision === "REJECTED"}
                     onClick={() => decide(r, "REJECTED")}
-                    className="text-rose-600"
+                    className="flex-1 px-3! text-rose-600 sm:flex-none"
                     title="Reject candidate"
                   >
                     <XCircle className="h-4 w-4" />
@@ -346,6 +350,7 @@ export function ResultsTable() {
                       setNotes(r.adminNotes ?? "");
                       setNotesError(null);
                     }}
+                    className="flex-1 px-3! sm:flex-none"
                     title="Add admin notes"
                   >
                     <StickyNote className="h-4 w-4" />

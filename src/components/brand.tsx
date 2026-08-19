@@ -30,7 +30,7 @@ export function BrandLogo({
       </span>
       {showWordmark ? (
         <span
-          className={`${text} brand-serif font-bold leading-none text-slate-900`}
+          className={`${text} brand-serif hidden font-bold leading-none text-slate-900 min-[381px]:inline`}
         >
           thecodingcompany
         </span>

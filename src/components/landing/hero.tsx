@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 import { BrandLogo } from "@/components/brand";
 import { env } from "@/lib/env";
-import { EASE_PULL, WordsPullUp } from "./prisma-text";
+import { EASE_PULL } from "./prisma-text";
 
 const HERO_VIDEO =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
@@ -85,24 +85,7 @@ export function LandingHero({ homeHref }: { homeHref: string | null }) {
               <p className="mono-label text-primary-300">
                 {env.appName} · Internships open right now
               </p>
-              <h1
-                className="mt-3 text-white"
-                style={{ color: "#E1E0CC" }}
-              >
-                <span className="block !text-[#E1E0CC]">
-                  <WordsPullUp
-                    text="Business"
-                    showAsterisk
-                    className="text-[26vw] font-medium !leading-[0.85] tracking-[-0.07em] sm:text-[24vw] md:text-[22vw] lg:text-[20vw]"
-                  />
-                </span>
-                <span
-                  className="block text-[26vw] font-medium leading-[0.85] tracking-[-0.07em] sm:text-[24vw] md:text-[22vw] lg:text-[20vw]"
-                  style={{ color: "rgba(225,224,204,0.55)" }}
-                >
-                  <WordsPullUp text="taught from zero." delay={0.16} />
-                </span>
-              </h1>
+              <h1 className="sr-only">Business education for interns, taught from scratch. Apply now.</h1>
             </div>
 
             <div className="col-span-12 flex flex-col gap-8 md:col-span-4">
